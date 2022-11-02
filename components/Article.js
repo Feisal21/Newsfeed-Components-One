@@ -102,3 +102,67 @@ const data = [
   */
   
 
+/* Create a function that creates a component. You will want your component to look like the template below: 
+  
+  <div class="article">
+    <h2>{title of the article}</h2>
+    <p class="date">{date of the article}</p>
+    {three separate paragraph elements}
+    <span class='expandButton'></span>
+  </div>
+  Hint: You will need to use createElement more than once here!
+  Your function should take either an object as it's one argument, or 5 separate arguments mapping to each piece of the data object above.
+  */
+  function createArticle(dataObj) {
+    // create needed elements
+    let article = document.createElement('div');
+    let title = document.createElement('h2');
+    let date = document.createElement('p');
+    let firstP = document.createElement('p');
+    let secondP = document.createElement('p');
+    let thirdP = document.createElement('p');
+    let buttonPanel = document.createElement('div');
+    let expandButton = document.createElement('button');
+    let closeButton = document.createElement('button');
+  
+    // add needed classes to the elements
+    article.classList.add('article');
+    date.classList.add('date');
+    buttonPanel.classList.add('button-panel')
+    expandButton.classList.add('expandButton');
+    closeButton.classList.add('expandButton', 'hide-btn');
+  
+    // setup the structure of the article
+    buttonPanel.append(expandButton, closeButton);
+    article.append(title, date, firstP, secondP, thirdP, buttonPanel);
+  
+    // add content to the elements
+    title.append(dataObj.title);
+    date.append(dataObj.date);
+    firstP.append(dataObj.firstParagraph);
+    secondP.append(dataObj.secondParagraph);
+    thirdP.append(dataObj.thirdParagraph);
+    expandButton.textContent = '\u25bc';
+    closeButton.textContent = '\u25b2';
+  
+    /* Add an event listener to the buttonPanel div. This event listener should toggle the class 'article-open' on the 'article' div. */
+    buttonPanel.addEventListener('click', () => {
+      expandButton.classList.toggle('hide-btn');
+      closeButton.classList.toggle('hide-btn');
+  
+      article.classList.toggle('article-open');
+      document.body.classList.toggle('body');
+    });
+  
+    // return the article component
+    return article;
+  }
+  
+  
+  // Map over the data, creating a component for each object and add each component to the DOM as children of the 'articles' div.
+  const articles = document.querySelector('.articles');
+  
+  data.forEach(dataObj => {
+    let article = createArticle(dataObj);
+    articles.append(article);
+  });
